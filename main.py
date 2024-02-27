@@ -1,3 +1,6 @@
+import typing
+from typing import List
+
 def longest_increasing_subsequence(V):
     n = len(V)
     L = [1]*n
@@ -54,6 +57,17 @@ def min_coins(C, N):
         return coins
 
 
+def load_words_from_file() -> List[str]:
+    print(f"Loading Vertices from word_list_moby_crossword_flat.txt.")
+    count = 0
+    result = []
+    with open('word_list_moby_crossword_flat.txt', 'r') as ins:
+        for line in ins:
+            result.append(line[:-2])
+    print("Done Loading from file.\n-------------------------------------------")
+    return result
+
+
 if __name__ == "__main__":
     print("Starting main.")
     # ex = [2, 22, 32, 35, 66, 59, 79, 64, 48, 96, 7, 39, 18, 15, 45, 89, 3, 81, 26, 26, 31,
@@ -61,7 +75,8 @@ if __name__ == "__main__":
     #       11, 65, 1, 80, 14, 99, 29, 91]
     # result = longest_increasing_subsequence(ex)
     # print(result)
-    C = [1, 4, 9, 15, 25, 40, 75, 100]
-    for i in range(1, 201):
-        print(f"{i}  {min_coins(C, i)}")
+    # C = [1, 4, 9, 15, 25, 40, 75, 100]
+    # for i in range(1, 201):
+    #     print(f"{i}  {min_coins(C, i)}")
+    print(load_words_from_file())
     print("Done.")
