@@ -25,13 +25,43 @@ def longest_increasing_subsequence(V):
                 seq.insert(0, V[i])
                 idx = i
                 break
+        else:
+            break
 
     return seq
 
 
+def min_coins(C, N):
+    # Initialize num_coins array
+    num_coins = [0] + [float('inf')]*N
+    coins_used = [0] + [-1]*N
+
+    # Compute minimum coins required for all values from 1 to N
+    for n in range(1, N+1):
+        for c in C:
+            if n-c >= 0 and num_coins[n-c] + 1 < num_coins[n]:
+                num_coins[n] = num_coins[n-c] + 1
+                coins_used[n] = c
+
+    # Construct the list of coins used
+    if num_coins[N] == float('inf'):
+        return None
+    else:
+        coins = []
+        while N > 0:
+            coins.append(coins_used[N])
+            N -= coins_used[N]
+        return coins
+
+
 if __name__ == "__main__":
     print("Starting main.")
-    ex = [36, 13, 78, 85, 16, 52, 58, 61, 63, 83, 46, 19, 85, 1, 58, 71, 26, 26, 21, 31]
-    result = longest_increasing_subsequence(ex)
-    print(result)
+    # ex = [2, 22, 32, 35, 66, 59, 79, 64, 48, 96, 7, 39, 18, 15, 45, 89, 3, 81, 26, 26, 31,
+    #       55, 10, 91, 70, 61, 12, 87, 13, 31, 27, 58, 71, 75, 32, 63, 98, 77, 92, 43, 66, 32,
+    #       11, 65, 1, 80, 14, 99, 29, 91]
+    # result = longest_increasing_subsequence(ex)
+    # print(result)
+    C = [1, 4, 9, 15, 25, 40, 75, 100]
+    for i in range(1, 201):
+        print(f"{i}  {min_coins(C, i)}")
     print("Done.")
