@@ -1,5 +1,6 @@
 import typing
-from typing import List
+from typing import List, Set
+
 
 def longest_increasing_subsequence(V):
     n = len(V)
@@ -57,15 +58,31 @@ def min_coins(C, N):
         return coins
 
 
-def load_words_from_file() -> List[str]:
-    print(f"Loading Vertices from word_list_moby_crossword_flat.txt.")
-    count = 0
-    result = []
+def load_words_from_file() -> Set[str]:
+    result = set()
     with open('word_list_moby_crossword_flat.txt', 'r') as ins:
         for line in ins:
-            result.append(line[:-2])
-    print("Done Loading from file.\n-------------------------------------------")
+            temp = line.split('\n')
+            result.add(temp[0])
     return result
+
+
+def word_string_checker(w: str) -> bool:
+    words = load_words_from_file()
+    length = len(w)
+    L = [False] * length
+    for i in range(length-1, -1, -1):
+        temp = w[i]
+        for j in range(i, length):
+            if L[j]:
+                if temp in words:
+                    L[i] = True
+                    break
+            temp += w[j]
+    if L[0]:
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":
@@ -78,5 +95,6 @@ if __name__ == "__main__":
     # C = [1, 4, 9, 15, 25, 40, 75, 100]
     # for i in range(1, 201):
     #     print(f"{i}  {min_coins(C, i)}")
-    print(load_words_from_file())
+    thing = input("Give the string thing that you wanna test: ")
+    print(word_string_checker(thing))
     print("Done.")
