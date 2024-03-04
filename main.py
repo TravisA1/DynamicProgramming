@@ -72,16 +72,26 @@ def word_string_checker(w: str) -> bool:
     length = len(w)
     L = [False] * length
     for i in range(length-1, -1, -1):
-        temp = w[i]
+        temp = ""
         for j in range(i, length):
             if L[j]:
                 if temp in words:
                     L[i] = True
                     break
             temp += w[j]
+        else:
+            if temp in words:
+                L[i] = True
     if L[0]:
         return True
     else:
+        for i in range(len(L)):
+            if L[i]:
+                print(f"The nearest true index is at {i}")
+                for j in range(i, i+10):
+                    print(w[j], end="")
+                print("\n")
+                break
         return False
 
 
