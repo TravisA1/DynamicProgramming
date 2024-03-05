@@ -95,16 +95,38 @@ def word_string_checker(w: str) -> bool:
         return False
 
 
+def min_penalty(h, loc):
+    N = len(h)
+    P = [float('inf')]*N
+    P[0] = 0
+    path = [0] * N
+
+    # Calculate minimum penalty for reaching each hotel
+    for i in range(1, N):
+        for j in range(i):
+            penalty = (200 - (loc[i] - loc[j]))**2
+            if P[i] > P[j] + penalty:
+                P[i] = P[j] + penalty
+                path[i] = j
+    print(P)
+    # Find the path and total penalty
+    final_path = [N-1]
+    current = N-1
+    total_penalty = P[N-1]
+
+    while current > 0:
+        current = path[current]
+        final_path.insert(0, current)
+
+    return total_penalty, final_path
+
+
 if __name__ == "__main__":
     print("Starting main.")
-    # ex = [2, 22, 32, 35, 66, 59, 79, 64, 48, 96, 7, 39, 18, 15, 45, 89, 3, 81, 26, 26, 31,
-    #       55, 10, 91, 70, 61, 12, 87, 13, 31, 27, 58, 71, 75, 32, 63, 98, 77, 92, 43, 66, 32,
-    #       11, 65, 1, 80, 14, 99, 29, 91]
-    # result = longest_increasing_subsequence(ex)
-    # print(result)
-    # C = [1, 4, 9, 15, 25, 40, 75, 100]
-    # for i in range(1, 201):
-    #     print(f"{i}  {min_coins(C, i)}")
-    thing = input("Give the string thing that you wanna test: ")
-    print(word_string_checker(thing))
+    h = ['Hotel1', 'Hotel2', 'Hotel3', 'Hotel4', 'Hotel5', 'Hotel6', 'Hotel7', 'Hotel8', 'Hotel9', 'Hotel10', 'Hotel11',
+         'Hotel12', 'Hotel13', 'Hotel14', 'Hotel15']
+    loc = [0, 175, 215, 280, 400, 450, 560, 640, 780, 820, 1000, 1060, 1140, 1190, 1260, 1350]
+    total_penalty, final_path = min_penalty(h, loc)
+    print("Total penalty:", total_penalty)
+    print("Hotels path:", [h[i] for i in final_path])
     print("Done.")
