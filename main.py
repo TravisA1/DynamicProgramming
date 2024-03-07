@@ -1,5 +1,6 @@
 import typing
 from typing import List, Set
+from copy import deepcopy
 
 
 def longest_increasing_subsequence(V):
@@ -95,8 +96,8 @@ def word_string_checker(w: str) -> bool:
         return False
 
 
-def min_penalty(h, loc):
-    N = len(h)
+def min_penalty(loc):
+    N = len(loc)
     P = [float('inf')]*N
     P[0] = 0
     path = [0] * N
@@ -121,12 +122,50 @@ def min_penalty(h, loc):
     return total_penalty, final_path
 
 
+def max_loot(V):
+    N = len(V)
+    M = deepcopy(V)
+
+    path = [-1]*N
+
+    for i in range(N):
+        for j in range(i-1):
+            if M[i] < M[j] + V[i]:
+                M[i] = M[j] + V[i]
+                path[i] = j
+    print(M)
+    # Backtrack to find the houses robbed
+    houses = []
+    max_loot = max(M)
+    idx = M.index(max_loot)
+
+    while True:
+        houses.insert(0, idx)
+        if M[idx] == V[idx]:
+            break
+        else:
+            idx = M.index(M[idx] - V[idx])
+
+    return max_loot, houses
+
+
 if __name__ == "__main__":
     print("Starting main.")
-    h = ['Hotel1', 'Hotel2', 'Hotel3', 'Hotel4', 'Hotel5', 'Hotel6', 'Hotel7', 'Hotel8', 'Hotel9', 'Hotel10', 'Hotel11',
-         'Hotel12', 'Hotel13', 'Hotel14', 'Hotel15']
-    loc = [0, 175, 215, 280, 400, 450, 560, 640, 780, 820, 1000, 1060, 1140, 1190, 1260, 1350]
-    total_penalty, final_path = min_penalty(h, loc)
-    print("Total penalty:", total_penalty)
-    print("Hotels path:", [h[i] for i in final_path])
+    values = [225, 375, 125, 0, 75, 300, 325, 250, 350, 325, 375, 125, 100, 300, 250, 325, 275, 200, 300, 325]
+    loot, path = max_loot(values)
+    for i in range(len(values)):
+        print(i, end='\t')
+    print('')
+    for i in values:
+        print(i, end='\t')
+    print('')
+    for i in range(len(values)):
+        if i in path:
+            print("*", end="\t")
+        else:
+            print("", end="\t")
+    print("")
+    print("Max loot: " + str(loot))
+    print("Path: ", end='')
+    print(path)
     print("Done.")
